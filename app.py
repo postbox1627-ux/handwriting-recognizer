@@ -4,9 +4,12 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 
+if "canvas_key" not in st.session_state:
+    st.session_state.canvas_key = 0
+
 st.title("Handwritten Digit Recognizer")
 
-# ⭐ Load model ONLY once
+# Load model ONLY once
 model = load_model("alphanumeric_model.h5")
 
 classes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -21,10 +24,24 @@ canvas_result = st_canvas(
     height=300,
     width=300,
     drawing_mode="freedraw",
-    key="canvas",
+    display_toolbar=False,   # HIDE ICONS
+    key=f"canvas_{st.session_state.canvas_key}",
 )
+
+col1, col2 = st.columns(2)
+
+with col1:
+    predict_clicked = st.button("🔍 Predict")
+
+with col2:
+    clear_clicked = st.button("🧹 Clear")
+
+if clear_clicked:
+    st.session_state.canvas_key += 1
+    st.rerun()
+
 # ⭐ Predict button
-if st.button("🔍 Predict"):
+if predict_clicked:
 
     if canvas_result.image_data is None:
         st.warning("Draw something first ✏️")
@@ -40,9 +57,8 @@ if st.button("🔍 Predict"):
             st.warning("Draw something ✏️")
             st.stop()
     
-        # ⭐ Flip if needed (mirror fix)
+        # Flip if needed (mirror fix)
         img = np.fliplr(img)
-    
         img = img / 255.0
         img = img.reshape(1, 28, 28, 1)
     
@@ -55,5 +71,3 @@ if st.button("🔍 Predict"):
         st.subheader(f"Prediction: {char}")
     
         st.write(f"Confidence: {confidence:.2f}%")
-
-
