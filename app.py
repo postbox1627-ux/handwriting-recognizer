@@ -23,14 +23,17 @@ canvas_result = st_canvas(
     drawing_mode="freedraw",
     key="canvas",
 )
+# ⭐ Predict button
+if st.button("🔍 Predict"):
 
-if canvas_result.image_data is not None:
+    if canvas_result.image_data is None:
+        st.warning("Draw something first ✏️")
+    else:
+        img = Image.fromarray(canvas_result.image_data.astype('uint8'))
+        img = img.convert('L')
+        img = img.resize((28, 28))
 
-    img = Image.fromarray(canvas_result.image_data.astype('uint8'))
-    img = img.convert('L')
-    img = img.resize((28, 28))
-
-    img = np.array(img)
+        img = np.array(img)
 
     # ⭐ Check if canvas is empty
     if np.sum(img) < 1000:   # threshold
@@ -52,3 +55,4 @@ if canvas_result.image_data is not None:
     st.subheader(f"Prediction: {char}")
 
     st.write(f"Confidence: {confidence:.2f}%")
+
