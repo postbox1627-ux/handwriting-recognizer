@@ -4,9 +4,6 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 
-if "canvas_key" not in st.session_state:
-    st.session_state.canvas_key = 0
-
 st.title("Handwritten Digit Recognizer")
 
 # Load model ONLY once
@@ -16,6 +13,7 @@ classes = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
 st.write("Draw a character below:")
 
+# CANVAS
 canvas_result = st_canvas(
     fill_color="black",
     stroke_width=15,
@@ -24,19 +22,11 @@ canvas_result = st_canvas(
     height=300,
     width=300,
     drawing_mode="freedraw",
-    display_toolbar=True,   # HIDE ICONS
-    key=f"canvas_{st.session_state.canvas_key}",
+    key="canvas",
 )
 
-col1 = st.columns(2)
-with col1:
-    predict_clicked = st.button(
-        "🔍 Predict",
-        use_container_width=True
-    )
-
-# ⭐ Predict button
-if predict_clicked:
+#  Predict button
+if st.button("🔍 Predict"):
 
     if canvas_result.image_data is None:
         st.warning("Draw something first ✏️")
@@ -66,5 +56,6 @@ if predict_clicked:
         st.subheader(f"Prediction: {char}")
     
         st.write(f"Confidence: {confidence:.2f}%")
+
 
 
