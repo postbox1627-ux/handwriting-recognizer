@@ -35,24 +35,25 @@ if st.button("🔍 Predict"):
 
         img = np.array(img)
 
-    # ⭐ Check if canvas is empty
-    if np.sum(img) < 1000:   # threshold
-        st.warning("Draw something ✏️")
-        st.stop()
+        # ⭐ Check if canvas is empty
+        if np.sum(img) < 1000:   # threshold
+            st.warning("Draw something ✏️")
+            st.stop()
+    
+        # ⭐ Flip if needed (mirror fix)
+        img = np.fliplr(img)
+    
+        img = img / 255.0
+        img = img.reshape(1, 28, 28, 1)
+    
+        prediction = model.predict(img)
+        index = np.argmax(prediction)
+        char = classes[index]
+        char = char.upper()
+        confidence = np.max(prediction) * 100
+    
+        st.subheader(f"Prediction: {char}")
+    
+        st.write(f"Confidence: {confidence:.2f}%")
 
-    # ⭐ Flip if needed (mirror fix)
-    img = np.fliplr(img)
-
-    img = img / 255.0
-    img = img.reshape(1, 28, 28, 1)
-
-    prediction = model.predict(img)
-    index = np.argmax(prediction)
-    char = classes[index]
-    char = char.upper()
-    confidence = np.max(prediction) * 100
-
-    st.subheader(f"Prediction: {char}")
-
-    st.write(f"Confidence: {confidence:.2f}%")
 
