@@ -41,7 +41,9 @@ if canvas_result.image_data is not None:
     prediction = model.predict(img)
     index = np.argmax(prediction)
     char = classes[index]
+    char = char.upper()
     confidence = np.max(prediction) * 100
 
     st.subheader(f"Prediction: {char}")
+
     st.write(f"Confidence: {confidence:.2f}%")
