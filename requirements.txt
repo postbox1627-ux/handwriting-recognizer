@@ -1,0 +1,5 @@
+streamlit
+tensorflow
+streamlit-drawable-canvas
+pillow
+numpy
