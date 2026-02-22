@@ -28,17 +28,21 @@ canvas_result = st_canvas(
     key=f"canvas_{st.session_state.canvas_key}",
 )
 
-col1, col2 = st.columns(2)
-
+col1, col2 = st.columns([1, 1])
 with col1:
-    predict_clicked = st.button("🔍 Predict")
-
+    predict_clicked = st.button(
+        "🔍 Predict",
+        use_container_width=True
+    )
 with col2:
-    clear_clicked = st.button("🧹 Clear")
+    clear_clicked = st.button(
+        "🧹 Clear",
+        use_container_width=True
+    )
 
 if clear_clicked:
     st.session_state.canvas_key += 1
-    st.rerun()
+    st.session_state.prediction = None
 
 # ⭐ Predict button
 if predict_clicked:
@@ -71,3 +75,4 @@ if predict_clicked:
         st.subheader(f"Prediction: {char}")
     
         st.write(f"Confidence: {confidence:.2f}%")
+
