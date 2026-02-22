@@ -34,7 +34,7 @@ if canvas_result.image_data is not None:
 
     # ⭐ Check if canvas is empty
     if np.sum(img) < 1000:   # threshold
-        st.warning("Draw something first ✏️")
+        st.warning("Draw something ✏️")
         st.stop()
 
     # ⭐ Flip if needed (mirror fix)
@@ -52,4 +52,3 @@ if canvas_result.image_data is not None:
     st.subheader(f"Prediction: {char}")
 
     st.write(f"Confidence: {confidence:.2f}%")
-
